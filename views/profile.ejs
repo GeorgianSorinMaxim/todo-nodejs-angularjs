@@ -1,0 +1,458 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <title>Stylinger / Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/menu.css">
+    </style>
+</head>
+<body ng-controller="profileController">
+  <div class="bodyWrapper">
+    <div class="container">
+
+      <header class="clearfix">
+        <div class="container">
+
+          <a id="logo" href="/"><h1>Stylinger</h1></a>
+
+          <div class="header-left">
+            <label for="open">
+              <span class="hidden-desktop"></span>
+            </label>
+            <input type="checkbox" name="" id="open">
+            <nav>
+              <a href="#">Get Listed</a>
+              <a href="#">Meet the team</a>
+              <a href="#">Contact</a>
+            </nav>
+          </div>
+
+          <div class="header-right">
+              <div class="button-dropdown">Hi, <%= user.local.profile.firstname %> &#x25BC;
+                  <ul class="dropdown">
+                    <li><a href="/profile" class="dropdown-link">My Profile</a></li>
+                    <li><a href="/bookings" class="dropdown-link">My Bookings</a></li>
+                    <li><a href="/reviews" class="dropdown-link">My Reviews</a></li>
+                    <li><a href="/logout" class="dropdown-link">Logout</a></li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+      </header>
+      <section class="clearfix">
+      </section>
+
+        <% if (user.local.email) { %>
+        <div class="container">
+
+          <div class="">
+            <div class="three columns">
+                <div id='sidebarNav'>
+                <ul>
+                     <li class='active'><a href='#'><span>Profile</span></a></li>
+                     <li><a href='/bookings'><span>My Bookings</span></a></li>
+                     <li class='last'><a href='/reviews'><span>My Reviews</span></a></li>
+                </ul>
+                </div>
+            </div>
+
+            <div class="nine columns">
+                <div class="row" style="background-color: #E4E3E0;">
+                    <div class="">
+                        <!--<strong>id</strong>: <%= user._id %><br>
+                        <strong>password</strong>: <%= user.local.password %><br><br><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>firstname</strong>: <%= user.local.profile.firstname %><br>
+                        <strong>lastname</strong>: <%= user.local.profile.lastname %><br>
+                        <strong>gender</strong>: <%= user.local.profile.gender %><br>
+                        <strong>birthdate</strong>: DD <%= user.local.profile.dobday %> MM <%= user.local.profile.dobmonth %> YYYY <%= user.local.profile.dobyear%> <br>
+                        <strong>address</strong>: <%= user.local.profile.address %><br>
+                        <strong>zip</strong>: <%= user.local.profile.zip %><br>
+                        <strong>city</strong>: <%= user.local.profile.city %><br>
+                        <strong>phone</strong>: <%= user.local.profile.phone %><br>
+                        <strong>language</strong>: <%= user.local.profile.language %><br>
+                        <strong>newsletter</strong>: <%= user.local.profile.newsletter %><br>
+                        <strong>terms</strong>: <%= user.local.profile.terms %><br>-->
+                    </div>
+
+                    <form class="formClass" action="/profile" method="POST" >
+                        <% if (message > 0) { %>
+                        <div class="alert-success">Profile updated!</div>
+                        <% } %>
+
+                        <input type="hidden" name="_method" value="put">
+
+                        <input type='text' name='email' id='email' value='<%= user.local.email %>' disabled>
+                        <label for="email" class="labelForm">Email</label>
+
+                        <input type='text' name='firstname' id='firstname' value='<%= user.local.profile.firstname %>'>
+                        <label for="firstname" class="labelForm">First Name</label>
+
+                        <input type='text' name='lastname' id='lastname' value='<%= user.local.profile.lastname %>'>
+                        <label for="lastname" class="labelForm">Last Name</label>
+
+                        <div class="dob">
+                            <select style="margin-right: 10px;" class="styled-select" name="dobd" ng-model="val.date", ng-options="d for d in dates track by d">
+                                <option value disabled selected>Day</option>
+                            </select>
+                            <select style="margin-right: 10px;" class="styled-select" name="dobm" ng-model="val.month", ng-options="m.value as m.name for m in months">
+                                <option value disabled>Month</option>
+                            </select>
+                            <select class="styled-select" name="doby" ng-model="val.year" ng-options="y for y in years">
+                                <option value disabled selected>Year</option>
+                            </select>
+                        </div>
+                        <label for="dob" class="labelForm">Birthdate</label>
+
+                        <input type='text' name='address' id='address' value='<%= user.local.profile.address %>' placeholder="Please enter your addres">
+                        <label for="address" class="labelForm">Address</label>
+
+                        <input type='text' name='zip' id='zip' value='<%= user.local.profile.zip %>' placeholder="1234">
+                        <label for="zip" class="labelForm">ZIP</label>
+
+                        <input type='text' name='city' id='city' value='<%= user.local.profile.city %>' placeholder="Please enter your city">
+                        <label for="city" class="labelForm">City</label>
+
+                        <div class="groupRadios" name="gender">
+                            <div class="columnLeft">
+                                <input id="male" type="radio" name="gender" ng-model="gender"  value="male"/>
+                                <label for="male" class="side-label">Male</label>
+                            </div>
+
+                            <div class="columnCenter">
+                                <input id="female" type="radio" name="gender" ng-model="gender"  value="female"/>
+                                <label for="female" class="side-label">Female</label>
+                            </div>
+
+                            <div class="columnRight">
+                                <input id="donot" type="radio" name="gender" ng-model="gender"  value="donot"/>
+                                <label for="donot" class="side-label">Private</label>
+                            </div>
+                        </div>
+                        <label for="city" class="labelForm">Gender</label>
+
+                        <input type='text' name='phone' id='phone' value='<%= user.local.profile.phone %>' placeholder="Please enter your phone number"/>
+                        <label for="phone" class="labelForm">Phone</label>
+
+                        <div class="groupRadios" name="language">
+                            <div class="columnL">
+                                <input id="EN" type="radio" name="language" ng-model="language"  value="EN"/>
+                                <label for="EN" class="side-label">English</label>
+                            </div>
+
+                            <div class="columnR">
+                                <input id="DK" type="radio" name="language" ng-model="language"  value="DK"/>
+                                <label for="DK" class="side-label">Danish</label>
+                            </div>
+                        </div>
+                        <label for="language" class="labelForm">Language</label>
+
+                        <div class="groupCheckbox">
+                            <input id="newsletter" type="checkbox" name='newsletter' ng-model="checkbox" ng-true-value="true" ng-false-value="false"/>
+                            <label for="newsletter" class="checkbox-label">Yes, send me newsletters about products, offers and promotions (emails or text message).</label>
+                        </div>
+
+                        <div class="buttonContainer">
+                          <button type="submit">Update Profile</button>
+                        </div>
+                    </form>
+              </div>
+
+              <br>
+
+              <div class="row" style="background-color: #E4E3E0;">
+                    <form class="formClass" action="/profile/password" method="POST" >
+                        <!-- <% if (message > 0) { %> -->
+                        <div class="alert-success">Profile updated!</div>
+                        <div class="alert alert-danger"><%= message %></div>
+                        <!-- <% } %> -->
+                        <!-- <input type="hidden" name="_method" value="put" /> -->
+
+                        <input type="password" name="password" placeholder="Password" required />
+                        <label for="password" class="labelForm">Password</label>
+
+                        <input type="password" name="newpassword" placeholder="New Password" ng-model="passReg" required/>
+                        <label for="newpassword" class="labelForm">New Password</label>
+
+                        <input type="password" name="confirmpassword" placeholder="Confirm Password" ng-match="passReg" required/>
+                        <label for="confirmpassword" class="labelForm">Confirm Password</label>
+
+                        <div class="buttonContainer">
+                            <button type="submit">Change Password</button>
+                        </div>
+                    </form>
+              </div>
+
+              <br>
+
+              <div class="row" style="background-color: #E4E3E0;">
+                    <div class="formClass">
+                        <p class="parContent">Keep in mind that a deleted account cannot be recovered.</p>
+                        <div class="buttonContainer">
+                            <button ng-click="toggleModal()" type="submit">Delete Account</button>
+                            <modal title="Delete Account" visible="showModal">
+                                <form action="/profile/delete" method="POST">
+                                  <input type="hidden" name="_method" value="put" />
+                                  <p>Are you sure that you want to delete your account?</p>
+                                  <button type="submit" ng-click="submitted=true">Delete Account</button>
+                                  <button type="button" data-dismiss="modal">Keep Account</button>
+                                </form>
+                            </modal>
+                        </div>
+                    </div>
+              </div>
+           </div>
+        </div>
+
+
+        <% } %>
+
+
+        <% if (user.facebook.email) { %>
+       <div class="">
+         <div class="three columns">
+             <p><a href="/profile">My Profile</a></p>
+             <p><a href="/bookings">My Bookings</a></p>
+             <p><a href="/reviews">My Reviews</a></p>
+         </div>
+
+         <div class="nine columns">
+            <!-- Facebook Profile -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                    <% if (user.facebook.token) { %>
+                        <p>
+                            <strong>id</strong>: <%= user.facebook.id %><br>
+                            <strong>token</strong>: <%= user.facebook.token %><br>
+                            <strong>email</strong>: <%= user.facebook.email %><br>
+                            <strong>name</strong>: <%= user.facebook.name %><br>
+                        </p>
+
+                        <a href="/unlink/facebook" class="btn btn-info">Unlink</a>
+                    <% } else { %>
+                        <a href="/connect/facebook" class="btn btn-primary">Connect Facebook</a>
+                    <% } %>
+
+                </div>
+            </div>
+          </div>
+       </div>
+
+       <div class="">
+        <!-- TWITTER INFORMATION -->
+        <!--<div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
+
+                <% if (user.twitter.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.twitter.id %><br>
+                        <strong>token</strong>: <%= user.twitter.token %><br>
+                        <strong>display name</strong>: <%= user.twitter.displayName %><br>
+                        <strong>username</strong>: <%= user.twitter.username %>
+                    </p>
+
+                    <a href="/unlink/twitter" class="btn btn-info">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/twitter" class="btn btn-info">Connect Twitter</a>
+                <% } %>
+
+            </div>
+        </div>-->
+
+        <!-- GOOGLE INFORMATION -->
+        <!--<div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+
+                <% if (user.google.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.google.id %><br>
+                        <strong>token</strong>: <%= user.google.token %><br>
+                        <strong>email</strong>: <%= user.google.email %><br>
+                        <strong>name</strong>: <%= user.google.name %>
+                    </p>
+
+                    <a href="/unlink/google" class="btn btn-danger">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/google" class="btn btn-danger">Connect Google</a>
+                <% } %>
+
+            </div>
+        </div>-->
+        </div>
+        <% } %>
+    </div><br>
+  </div>
+
+  <div id="footerStyle">
+      <div class="row">
+          <div class="six columns">
+              <h1>Stylinger</h1>
+              <p class="textFooter">Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem.</p>
+          </div>
+
+          <div class="six columns" id="footerWhite">
+              <nav>
+                <a href="#">Get Listed</a>
+                <a href="#">Meet the team</a>
+                <a href="#">Contact</a>
+              </nav>
+
+              <div id="contactFooter">
+                  <p>(+45) 52 80 81 19</p>
+                  <p>hello@stylinger.com</p>
+                  <p>Paludan Müllers Vej 85, 8210, Aarhus</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <hr>
+
+          <p>Stylinger @ 2015 / Copyright</p>
+      </div>
+  </div>
+
+<script>
+    var myApp = angular.module('myApp', []);
+
+    myApp.controller('profileController', ['$scope','$http', function($scope, $http) {
+          // Modal dialog
+          $scope.showModal = false;
+          $scope.toggleModal = function(){
+              $scope.showModal = !$scope.showModal;
+          };
+
+          $scope.val = {};
+
+          var min = $scope.min = moment('1900-01-01');
+          var max = $scope.max = moment(new Date()); // Defaults to now
+
+          $scope.years = [];
+
+          for (var i=max.year(); i>=min.year(); i--) {
+            $scope.years.push(i);
+          }
+
+          $scope.$watch('val.year', function () {
+            updateMonthOptions();
+          });
+
+          $scope.$watchCollection('[val.month, val.year]', function () {
+            updateDateOptions();
+          });
+
+
+          function updateMonthOptions () {
+            // Values begin at 1 to permit easier boolean testing
+            $scope.months = [];
+
+            var minMonth = $scope.val.year && min.isSame([$scope.val.year], 'year') ? min.month() : 0;
+            var maxMonth = $scope.val.year && max.isSame([$scope.val.year], 'year') ? max.month() : 11;
+
+            var monthNames = moment.months();
+
+            for (var j=minMonth; j<=maxMonth; j++) {
+              $scope.months.push({
+                name: monthNames[j],
+                value: j+1
+              });
+            }
+
+            if ($scope.val.month-1 > maxMonth || $scope.val.month-1 < minMonth) delete $scope.val.month;
+          }
+
+          function updateDateOptions (year, month) {
+            var minDate, maxDate;
+
+            if ($scope.val.year && $scope.val.month && min.isSame([$scope.val.year, $scope.val.month-1], 'month')) {
+              minDate = min.date();
+            } else {
+              minDate = 1;
+            }
+
+            if ($scope.val.year && $scope.val.month && max.isSame([$scope.val.year, $scope.val.month-1], 'month')) {
+              maxDate = max.date();
+            } else if ($scope.val.year && $scope.val.month) {
+              maxDate = moment([$scope.val.year, $scope.val.month-1]).daysInMonth();
+            } else {
+              maxDate = 31;
+            }
+
+            $scope.dates = [];
+
+            for (var i=minDate; i<=maxDate; i++) {
+              $scope.dates.push(i);
+            }
+            if ($scope.val.date < minDate || $scope.val.date > maxDate) delete $scope.val.date;
+          }
+
+          $scope.val.date = parseInt(<%- JSON.stringify(user.local.profile.dobday) %>);
+          $scope.val.month = parseInt(<%- JSON.stringify(user.local.profile.dobmonth) %>);
+          $scope.val.year = parseInt(<%- JSON.stringify(user.local.profile.dobyear) %>);
+
+          $scope.gender = <%- JSON.stringify(user.local.profile.gender) %>;
+          $scope.language = <%- JSON.stringify(user.local.profile.language) %>;
+
+          $scope.checkbox = Boolean(<%- JSON.stringify(user.local.profile.newsletter) %>);
+
+          //console.log($scope.checkbox);
+          //console.log($scope.val.date, $scope.val.month, $scope.val.year);
+          //console.log($scope.gender, $scope.language);
+    }]);
+
+    myApp.directive('modal', function () {
+      return {
+        template: '<div class="modal fade">' +
+            '<div class="modal-dialog">' +
+              '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                  '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                  '<h4 class="modal-title">{{ title }}</h4>' +
+                '</div>' +
+                '<div class="modal-body" ng-transclude></div>' +
+              '</div>' +
+            '</div>' +
+          '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace:true,
+        scope:true,
+        link: function postLink(scope, element, attrs) {
+          scope.title = attrs.title;
+
+          scope.$watch(attrs.visible, function(value){
+            if(value == true)
+              $(element).modal('show');
+            else
+              $(element).modal('hide');
+          });
+
+          $(element).on('shown.bs.modal', function(){
+            scope.$apply(function(){
+              scope.$parent[attrs.visible] = true;
+            });
+          });
+
+          $(element).on('hidden.bs.modal', function(){
+            scope.$apply(function(){
+              scope.$parent[attrs.visible] = false;
+            });
+          });
+        }
+      };
+    });
+</script>
+
+<!-- <script src="./controller/profile.js"></script> -->
+</body>
+</html>

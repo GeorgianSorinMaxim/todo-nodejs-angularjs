@@ -1,0 +1,267 @@
+<!doctype html>
+<html ng-app="myApp" ng-controller="checkoutController">
+<head>
+    <title>Checkout / {{name}}</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
+
+    <script>
+
+      var myApp = angular.module("myApp", []);
+
+      myApp.controller("checkoutController", function($scope, $http) {
+
+          // Modal dialog
+          $scope.showModal = false;
+          $scope.toggleModal = function(){
+              $scope.showModal = !$scope.showModal;
+          };
+
+          Stripe.setPublishableKey('pk_test_dX8HKNJmD3xC0Y2EHaHG35EC');
+
+          jQuery(function($) {
+            $('#payment-form').submit(function(event) {
+              var $form = $(this);
+              // Disable the submit button to prevent repeated clicks
+              $form.find('button').prop('disabled', true);
+              Stripe.card.createToken($form, stripeResponseHandler);
+              // Prevent the form from submitting with the default action
+              return false;
+            });
+          });
+
+          $scope.serviceprovider = <%- JSON.stringify(serv) %>;
+          $scope.name = $scope.serviceprovider[0].name;
+          $scope.address = $scope.serviceprovider[0].address;
+          $scope.thumb = $scope.serviceprovider[0].thumb;
+          $scope.phone = $scope.serviceprovider[0].phone
+          $scope.selectionID = <%- JSON.stringify(selectionID) %>;
+          $scope.selectionName = <%- JSON.stringify(selectionName) %>;
+          $scope.selectionPrice = <%- JSON.stringify(selectionPrice) %>;
+          $scope.selectionDuration = <%- JSON.stringify(selectionDuration) %>;
+          $scope.datepicker = <%- JSON.stringify(datepicker) %>;
+          $scope.timepicker = <%- JSON.stringify(timepicker) %>;
+          // console.log("SP:", $scope.serviceprovider[0], $scope.name, $scope.thumb, $scope.phone);
+          // console.log("Selection:", $scope.selection);s
+          // console.log("Date:", $scope.datepicker);
+          // console.log("Time:", $scope.timepicker);
+      });
+
+      myApp.directive('modal', function () {
+        return {
+          template: '<div class="modal fade">' +
+              '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                  '<div class="modal-header">' +
+                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                    '<h4 class="modal-title">{{ title }}</h4>' +
+                  '</div>' +
+                  '<div class="modal-body" ng-transclude></div>' +
+                '</div>' +
+              '</div>' +
+            '</div>',
+          restrict: 'E',
+          transclude: true,
+          replace:true,
+          scope:true,
+          link: function postLink(scope, element, attrs) {
+            scope.title = attrs.title;
+
+            scope.$watch(attrs.visible, function(value){
+              if(value == true)
+                $(element).modal('show');
+              else
+                $(element).modal('hide');
+            });
+
+            $(element).on('shown.bs.modal', function(){
+              scope.$apply(function(){
+                scope.$parent[attrs.visible] = true;
+              });
+            });
+
+            $(element).on('hidden.bs.modal', function(){
+              scope.$apply(function(){
+                scope.$parent[attrs.visible] = false;
+              });
+            });
+          }
+        };
+      });
+    </script>
+</head>
+
+<body>
+  <div class="bodyWrapper">
+    <div class="container">
+
+        <header class="clearfix">
+          <div class="container">
+
+            <a id="logo" href="/"><h1>Stylinger</h1></a>
+
+            <div class="header-left">
+              <label for="open">
+                <span class="hidden-desktop"></span>
+              </label>
+              <input type="checkbox" name="" id="open">
+              <nav>
+                <a href="#">Get Listed</a>
+                <a href="#">Meet the team</a>
+                <a href="#">Contact</a>
+              </nav>
+            </div>
+
+            <% if (!user) { %>
+            <div class="header-right">
+                <p><a id="loginLink" href="/login" class="dropdown-link">Login</a><a id="registerLink" href="/signup" class="dropdown-link">Register</a></p>
+            </div>
+            <% } else { %>
+            <div class="header-right">
+              <div class="button-dropdown">Hi, <%= user.local.profile.firstname %> &#x25BC;
+                  <ul class="dropdown">
+                    <li><a href="/profile" class="dropdown-link">My Profile</a></li>
+                    <li><a href="/bookings" class="dropdown-link">My Bookings</a></li>
+                    <li><a href="/reviews" class="dropdown-link">My Reviews</a></li>
+                    <li><a href="/logout" class="dropdown-link">Logout</a></li>
+                  </ul>
+              </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    </header>
+
+    <section class="clearfix">
+    </section>
+
+    <div class="row" style="width: 80%;">
+        <div class="columnLeft" style="width: 30%; background-color: #fff; padding: 10px;">
+            <p class="contentTitleCheckout">1. Your selection</p><br>
+            <div class="checkoutLeft">
+                <img ng-src="{{thumb}}" />
+                <div class="checkoutLeftContent">
+                    <p class="name" style="font-size: 18px; font-family:'BRBold';">{{name}}</p>
+                    <p class="address">{{address}}</p>
+                    <!-- <span class="columnLeft" style="width: 60%;"><p class="timeSpan">Day</p><p class="infoSpan">{{datepicker}}</p></span>
+                    <span class="columnRight" style="width: 25%;"><p class="timeSpan">From</p><p class="infoSpan">{{timepicker}}</p></span> -->
+                    <p><span class="infoSpan">{{selectionName}}</span></p>
+                    <p><span class="timeSpan">Day: </span><span class="infoSpan">{{datepicker}}</span></p>
+                    <p><span class="timeSpan">From: </span><span class="infoSpan">{{timepicker}}</span></p>
+                    <p><span class="timeSpan">Duration: </span><span class="infoSpan">{{selectionDuration}} minutes</span></p>
+                </div>
+            </div>
+            <p>{{result[0].name}}</p>
+        </div>
+
+        <div class="columnCenter" style="width: 29%; background-color: #fff; padding: 10px;">
+            <p class="contentTitleCheckout">2. Your details</p><br>
+            <% if (!user) { %>
+            Already member? <a href="#" ng-click="toggleModal()">Login</a>
+            <modal title="Login" visible="showModal">
+                <form action="/login" method="post">
+                  <div class="form-group">
+                    <input type="email" name="email" ng-model="email" placeholder="Email" required autofocus>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" name="password" ng-model="password" placeholder="Password" ng-minlength="6" required>
+                  </div>
+                  <button type="submit" ng-click="submitted=true">Login</button>
+                </form>
+            </modal>
+            <% } else { %>
+            <!-- <p><%= user.local.profile.firstname %></p>
+            <p><%= user.local.profile.lastname %></p>
+            <p><%= user.local.email %></p>
+            <p><%= user.local.profile.phone %></p> -->
+            <input class="inputCheckout" type='text' name='email' id='email' value='<%= user.local.profile.firstname %>' disabled>
+            <input class="inputCheckout" type='text' name='email' id='email' value='<%= user.local.profile.lastname %>' disabled>
+            <input class="inputCheckout" type='text' name='email' id='email' value='<%= user.local.email %>' disabled>
+            <input class="inputCheckout" type='text' name='email' id='email' value='<%= user.local.profile.phone %>' disabled>
+            <textarea class="textareaCheckout" placeholder="Comments" ng-model="comments"></textarea>
+            <% } %>
+        </div>
+
+        <% if (user) { %>
+        <div class="columnRight" style="width: 29%;  background-color: #fff; padding: 10px;">
+          <div class="paymentCheckout">
+            <p class="contentTitleCheckout">3. Payment</p><br>
+            <p class="paymentContent"><img src="./css/img/security.png"/> <span class="checkoutText">Pay Securely</span></p>
+            <!-- <p class="paymentContent"><img src="./css/img/cash.png"/> <span class="checkoutText">Or Pay Cash</span></p> -->
+            <p class="paymentContent"><img src="./css/img/cancel.png"/> <span class="checkoutText">Free Cancellation</span></p>
+            <!-- <p class="total">Subtotal</p>
+            <input type="text" placeholder="Enter promotion code"> -->
+            <p><span class="timeSpan">To be paid: </span><span class="infoSpan">DKK {{selectionPrice}}</span></p>
+            <!-- <button type="submit">Apply</button> -->
+
+            <form action="/confirm" method="POST">
+              <input type="hidden" name="serviceproviderID" value="{{serviceprovider[0]._id}}"/>
+              <input type="hidden" name="serviceproviderN" value="{{name}}"/>
+              <input type="hidden" name="serviceproviderA" value="{{address}}"/>
+              <input type="hidden" name="serviceproviderT" value="{{thumb}}"/>
+              <input type="hidden" name="serviceproviderP" value="{{phone}}"/>
+              <input type="hidden" name="selectionName" value="{{selectionName}}"/>
+              <input type="hidden" name="datepicker" value="{{datepicker}}"/>
+              <input type="hidden" name="timepicker" value="{{timepicker}}"/>
+              <input type="hidden" name="price" value="{{selectionPrice}}"/>
+              <input type="hidden" name="comments" value="{{comments}}"/>
+              <script
+                  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="pk_test_dX8HKNJmD3xC0Y2EHaHG35EC"
+                  data-image="./css/img/icon.png"
+                  data-name="Stylinger"
+                  data-currency="dkk"
+                  data-amount="{{selectionPrice}}"
+                  data-locale="auto">
+              </script>
+            </form>
+
+            <!-- <form class="" action="/confirm" method="POST" >
+              <input type="hidden" name="serviceprovider" value="{{result}}"/>
+              <button type="submit">Confirm</button>
+            </form> -->
+          </div>
+          <p style="text-align: justify; font-size: 12px; ">By clicking on SUBMIT PAYMENT, you agree the terms, conditions and privacy policy of Stylinger.com</p>
+      </div>
+      <% } %>
+    </div>
+
+  </div>
+
+  <div id="footerStyle">
+      <div class="row">
+          <div class="six columns">
+              <h1>Stylinger</h1>
+              <p class="textFooter">Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem.</p>
+          </div>
+
+          <div class="six columns" id="footerWhite">
+              <nav>
+                <a href="#">Get Listed</a>
+                <a href="#">Meet the team</a>
+                <a href="#">Contact</a>
+              </nav>
+
+              <div id="contactFooter">
+                  <p>(+45) 52 80 81 19</p>
+                  <p>hello@stylinger.com</p>
+                  <p>Paludan Müllers Vej 85, 8210, Aarhus</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <hr>
+
+          <p>Stylinger @ 2015 / Copyright</p>
+      </div>
+  </div>
+</body>
+</html>

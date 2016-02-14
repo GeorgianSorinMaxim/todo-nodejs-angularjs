@@ -1,0 +1,180 @@
+<!doctype html>
+<html ng-app="myApp" ng-controller="reviewsController">
+<head>
+    <title>My Reviews</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script type="text/javascript" src="../lib/jquery.ratingbar.js"></script>
+    <link rel="stylesheet" href="../lib/ratingbar.css">
+    <script type="text/javascript" src="../lib/jquery.easing.1.3.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../less/styles.css">
+
+    <script>
+      var myApp = angular.module("myApp", []);
+
+      myApp.controller("reviewsController", function($scope, $http) {
+        $scope.results = <%- JSON.stringify(bookings) %>;
+        console.log($scope.results);
+
+        $scope.today = moment().format("DD-MM-YYYY");
+        console.log($scope.today);
+
+        $(document).ready(function() {
+          var ratingconfig = {
+            animate:		true,
+            duration:		175,
+            ease:			"easeOutBounce",
+            maxRating: 		10,
+            wrapperWidth:	175,
+            showText: 		false,
+            wrapperClass:	"wrapper_books",
+            innerClass:		"inner_books",
+            textClass: 		"rating_books"
+          }
+
+          $('.book_rating').ratingbar(ratingconfig);
+        });
+      });
+    </script>
+</head>
+
+<body>
+  <div class="bodyWrapper">
+    <div class="container">
+
+        <header class="clearfix">
+          <div class="container">
+
+            <a id="logo" href="/"><h1>Stylinger</h1></a>
+
+            <div class="header-left">
+              <label for="open">
+                <span class="hidden-desktop"></span>
+              </label>
+              <input type="checkbox" name="" id="open">
+              <nav>
+                <a href="#">Get Listed</a>
+                <a href="#">Meet the team</a>
+                <a href="#">Contact</a>
+              </nav>
+            </div>
+
+            <% if (!user) { %>
+            <div class="header-right">
+                <p><a id="loginLink" href="/login" class="dropdown-link">Login</a><a id="registerLink" href="/signup" class="dropdown-link">Register</a></p>
+            </div>
+            <% } else { %>
+            <div class="header-right">
+              <div class="button-dropdown">Hi, <%= user.local.profile.firstname %> &#x25BC;
+                  <ul class="dropdown">
+                    <li><a href="/profile" class="dropdown-link">My Profile</a></li>
+                    <li><a href="/bookings" class="dropdown-link">My Bookings</a></li>
+                    <li><a href="/reviews" class="dropdown-link">My Reviews</a></li>
+                    <li><a href="/logout" class="dropdown-link">Logout</a></li>
+                  </ul>
+              </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    </header>
+
+    <section class="clearfix">
+    </section>
+
+    <div class="container">
+      <div class="three columns">
+          <div id='sidebarNav'>
+          <ul>
+               <li><a href='/profile'><span>Profile</span></a></li>
+               <li><a href='/bookings'><span>My Bookings</span></a></li>
+               <li class='active' class='last'><a href='/reviews'><span>My Reviews</span></a></li>
+          </ul>
+          </div>
+      </div>
+
+      <div class="nine columns">
+        <div ng-show="results == 'none'">
+            <p style="margin-left: 20px; ">You have no reviews yet. See your bookings <a href="/bookings">here</a>.</p>
+        </div>
+
+        <div ng-show="results != 'none'">
+            <div class="result" ng-repeat="result in results | orderBy : '_doc.created' : true">
+                <div class="resultImage">
+                    <img ng-src="{{result[0].thumb}}" />
+                </div>
+
+                <div class="reviewContent">
+                    <p class="reviewTitle">Review for {{result[0].name}}</p>
+                    <!-- <p class="address">{{result[0].address}}</p> -->
+
+                    <p style="margin-bottom: 20px;"><span class="servicename">{{result._doc.service}}</span></p>
+                    <p><span class="titlename">{{result._doc.review.title}}</span></p>
+                    <p><span class="reviewname">{{result._doc.review.comment}}</span></p>
+
+                    <div ng-show="result._doc.reviewed == true" style="background-color: #fff; margin: auto; padding: 0px 10px 0px 10px; width: 100%; height: 100%; display: inline-block; ">
+                        <div class="columnL" style="width: 70%; margin-left:0px; margin-top: 20px;">
+                            <p class="ratingBarValue"><span class="six columns">Value </span> <span class="five columns"> {{result._doc.review.value}}</span> <span id="ratingBar" class="book_rating"> {{result._doc.review.value}}</span></p>
+                            <p class="ratingBarValue"><span class="six columns">Service </span> <span class="five columns"> {{result._doc.review.service}}</span> <span id="ratingBar" class="book_rating"> {{result._doc.review.service}}</span></p>
+                            <p class="ratingBarValue"><span class="six columns">Ambiance </span> <span class="five columns"> {{result._doc.review.ambiance}}</span> <span id="ratingBar" class="book_rating"> {{result._doc.review.ambiance}}</span></p>
+                        </div>
+                        <!-- <div class="columnR" style="width: 20%; margin-right:30px;">
+                            <span class="rating">{{result._doc.review.average}}</span>
+                        </div> -->
+                    </div>
+
+                    <p class="reviewdate">{{result._doc.review.date}}</p>
+                </div>
+
+                <div ng-show="result._doc.reviewed == false && result._doc.date < today">
+                    <p>Click <a href="/review/{{result._doc._id}}">here</a> to review this experience.</p>
+                </div>
+
+                <div ng-show="result._doc.reviewed == false && result._doc.date >= today">
+                    <p>You can review this experience the next day after your booking date, {{result._doc.date}}.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="footerStyle">
+      <div class="row">
+          <div class="six columns">
+              <h1>Stylinger</h1>
+              <p class="textFooter">Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem.</p>
+          </div>
+
+          <div class="six columns" id="footerWhite">
+              <nav>
+                <a href="#">Get Listed</a>
+                <a href="#">Meet the team</a>
+                <a href="#">Contact</a>
+              </nav>
+
+              <div id="contactFooter">
+                  <p>(+45) 52 80 81 19</p>
+                  <p>hello@stylinger.com</p>
+                  <p>Paludan Müllers Vej 85, 8210, Aarhus</p>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <hr>
+
+          <p>Stylinger @ 2015 / Copyright</p>
+      </div>
+  </div>
+</body>
+</html>

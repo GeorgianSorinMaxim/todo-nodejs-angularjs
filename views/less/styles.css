@@ -1,0 +1,255 @@
+/* Media Queries Assume: 1em = 16px */
+.lighten {
+  background-color: #b39fd0;
+}
+.useMixin a {
+  background-color: #b39fd0;
+}
+/* ================================================= */
+/* Reviews
+/* ================================================= */
+.reviewForm {
+  text-align: left;
+  width: 96%;
+  margin-left: 10px;
+}
+.reviewForm .reviewTitle {
+  font-size: 30px;
+  font-family: "Sophia";
+}
+.reviewForm input {
+  width: 100%;
+  border: 1px solid #fff;
+  padding-left: 10px;
+  height: 40px;
+}
+.reviewForm input:focus {
+  outline: none;
+}
+.reviewForm .textareaReview {
+  width: 100%;
+  min-height: 150px;
+  border: 1px solid #fff;
+  padding-left: 10px;
+  padding-top: 6px;
+  margin-bottom: 25px;
+}
+.reviewForm .rangeContainer {
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.reviewForm .rangeContainer label {
+  width: 70px;
+  font-size: 16px;
+}
+.reviewForm .rangeContainer span {
+  text-align: left;
+  color: #704fa0;
+  position: relative;
+  top: 10px;
+}
+.reviewForm .range {
+  width: 160px;
+  height: auto;
+  margin-top: 17px;
+  margin-right: 0px;
+}
+.reviewForm .reviewButtonContainer {
+  float: left;
+}
+.reviewForm input[type=range] {
+  -webkit-appearance: none;
+  background-color: silver;
+  border: none;
+  width: 200px;
+  height: 10px;
+}
+.reviewForm input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #704fa0;
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+.reviewContent {
+  text-align: left;
+  width: 100%;
+  margin: 0px;
+}
+.reviewContent .reviewTitle {
+  font-size: 26px;
+  font-family: "Sophia";
+  color: #8160b1;
+}
+.reviewContent .servicename {
+  font-weight: normal;
+  text-transform: none;
+  color: #8160b1;
+  font-style: italic;
+  font-weight: bold;
+}
+.reviewContent .titlename {
+  font-size: 16px;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: #939393;
+}
+.reviewContent .reviewname {
+  font-weight: normal;
+  text-align: justify !important;
+}
+.reviewContent .reviewdate {
+  color: #939393;
+  font-style: italic;
+}
+.reviewContent .inner_books {
+  background-color: lightgray !important;
+}
+/* ================================================= */
+/* Helpers
+/* ================================================= */
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+/* ================================================= */
+/* Columns
+/* ================================================= */
+.columns {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  *zoom: 1;
+}
+.columns:before,
+.columns:after {
+  display: table;
+  content: "";
+}
+.columns:after {
+  clear: both;
+}
+.columns img,
+.columns input,
+.columns select,
+.columns textarea {
+  max-width: 100%;
+}
+.columns > .column {
+  float: left;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.columns.two > .column:nth-child(odd),
+.columns.col-2 > .column:nth-child(odd) {
+  clear: left;
+}
+.columns.three > .column:nth-child(3n+1),
+.columns.col-3 > .column:nth-child(3n+1) {
+  clear: left;
+}
+.columns.four > .column:nth-child(4n+1),
+.columns.col-4 > .column:nth-child(4n+1) {
+  clear: left;
+}
+/* ================================================= */
+/* Mobile layout
+/* 240–479 px
+/* ================================================= */
+@media screen and (min-width: 15em) {
+  /** 16px * 15 = 240px **/
+  .columns > .column {
+    margin-bottom: 50px;
+  }
+}
+/* ================================================= */
+/* Wide mobile layout
+/* 480-599 px
+/* ================================================= */
+@media screen and (min-width: 30em) {
+  /** 16px * 30 = 480px **/
+}
+/* ================================================= */
+/* Tablet layout
+/* 600-959 px
+/* ================================================= */
+@media screen and (min-width: 37.5em) {
+  /** 16px * 37.5 = 600px **/
+  .columns > .column {
+    margin-bottom: 75px;
+  }
+  .columns.two > .column,
+  .columns.col-2 > .column,
+  .columns.four > .column,
+  .columns.col-4 > .column {
+    padding-left: 0;
+    padding-right: 25px;
+    width: 50%;
+  }
+  .columns.two > .column:nth-child(even),
+  .columns.col-2 > .column:nth-child(even),
+  .columns.four > .column:nth-child(even),
+  .columns.col-4 > .column:nth-child(even) {
+    padding-left: 25px;
+    padding-right: 0;
+  }
+}
+/* ================================================= */
+/* Widescreen layout
+/* 960-1079 px
+/* ================================================= */
+@media screen and (min-width: 60em) {
+  /** 16px * 60 = 960px **/
+  .columns.three > .column,
+  .columns.col-3 > .column {
+    padding-left: 33.33333333px;
+    width: 33.3333333333333%;
+  }
+  .columns.three > .column:first-child,
+  .columns.col-3 > .column:first-child,
+  .columns.three > .column:nth-child(3n+1),
+  .columns.col-3 > .column:nth-child(3n+1) {
+    padding-left: 0;
+    padding-right: 33.33333333px;
+  }
+  .columns.three > .column:nth-child(3n+2),
+  .columns.col-3 > .column:nth-child(3n+2) {
+    padding-left: 16.66666667px;
+    padding-right: 16.66666667px;
+  }
+  .columns.four > .column,
+  .columns.col-4 > .column {
+    padding-left: 37.5px;
+    width: 25%;
+  }
+  .columns.four > .column:first-child,
+  .columns.col-4 > .column:first-child,
+  .columns.four > .column:nth-child(4n+1),
+  .columns.col-4 > .column:nth-child(4n+1) {
+    padding-left: 0;
+    padding-right: 37.5px;
+  }
+  .columns.four > .column:nth-child(4n+2),
+  .columns.col-4 > .column:nth-child(4n+2) {
+    padding-left: 12.5px;
+    padding-right: 25px;
+  }
+  .columns.four > .column:nth-child(4n+3),
+  .columns.col-4 > .column:nth-child(4n+3) {
+    padding-left: 25px;
+    padding-right: 12.5px;
+  }
+}
