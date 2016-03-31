@@ -1,8 +1,12 @@
 {
-  "name": "Stylinger",
-  "description": "Stylinger.com",
+  "name": "Software Framework Prototype",
+  "description": "Software Framework Prototype",
   "version": "0.0.1",
-  "author": "Stylinger.com",
+  "author": "Georgian-Sorin Maxim",
+  "engines": {
+    "node": "4.2.4",
+    "npm": "2.14.12"
+  },
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "latest",
