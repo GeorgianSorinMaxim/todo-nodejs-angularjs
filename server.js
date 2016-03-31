@@ -3,7 +3,6 @@ var https = require('https');
 var app      = express();
 var port     = process.env.PORT || 3000;
 var mongoose = require('mongoose');
-var passport = require('passport');
 var flash    = require('connect-flash');
 var requirejs = require('requirejs');
 
@@ -17,17 +16,13 @@ var configDB = require('./config/database.js');
 // Connect to MongoDB
 mongoose.connect(configDB.url,  function(err) {
 	if (err) {
-		console.error(chalk.red('Could not connect to MongoDB!'));
-		console.log(chalk.red(err));
+		console.error('Could not connect to MongoDB!');
+		console.log(err);
 	}
 });
-require('./app/models/sp.server.model');
-require('./app/models/booking.server.model');
 
-require( './app/models/user' );
-
-// Pass PassportJS for configuration
-require('./config/passport')(passport);
+require('./app/models/patient');
+require('./app/models/patientNews');
 
 // Log every request to the console
 app.use(morgan('dev'));
@@ -48,20 +43,15 @@ app.use("/less", express.static(__dirname + '/views/less'));
 app.use("/lib", express.static(__dirname + '/views/lib'));
 app.use("/models", express.static(__dirname + '/app/models'));
 app.use("/controller", express.static(__dirname + '/app/controller'));
+app.use("/js", express.static(__dirname + '/app/js'));
 app.use("/routes", express.static(__dirname + '/app/routes'));
 app.use("/views", express.static(__dirname + '/views'));
 
 
-app.use(session({ secret: 'thestylingerverysecretsessionsecret?' }));
+app.use(session({ secret: 'myappsecret' }));
 
-// Allows the user to stay logged-in when navigatinb between different pages
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-
-require('./app/routes/routes.js')(app, passport);
-require('./app/routes/sp.server.routes.js')(app, passport);
-require('./app/routes/booking.server.routes.js')(app, passport);
+require('./app/routes/routes.js')(app);
+require('./node_modules/node-gcm');
 
 app.listen(port);
 console.log('Server running on port ' + port);

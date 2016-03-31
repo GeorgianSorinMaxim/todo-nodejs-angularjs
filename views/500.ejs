@@ -1,93 +1,40 @@
 <!doctype html>
 <html ng-app="myApp">
 <head>
-    <title>Stylinger</title>
+    <title>500 Error</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <!-- okeyNav -->
+    <link rel="stylesheet" href="./css/okayNav.min.css" media="screen">
+    <script src="./js/jquery.okayNav.js"></script>
 
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/menu.css">
-
     <script src="./controller/index.js"></script>
+
 </head>
 <body ng-controller="indexController">
-  <div class="wrapper">
-    <div class="container">
+  <header id="header">
+      <nav role="navigation" id="nav-main" class="okayNav">
+          <ul>
+              <li><a href="/news">NEWS</a></li>
+              <li><a href="/newsList">NEWS List</a></li>
+              <li><a href="/patients">Patients List</a></li>
+              <li><a href="/send">Send Message</a></li>
+          </ul>
+      </nav>
+  </header>
 
-        <header class="clearfix">
-          <div class="container">
+  </br>
 
-            <a id="logo" href="/"><h1>Stylinger</h1></a>
-
-            <div class="header-left">
-              <label for="open">
-                <span class="hidden-desktop"></span>
-              </label>
-              <input type="checkbox" name="" id="open">
-              <nav>
-                <a href="#">Get Listed</a>
-                <a href="#">Meet the team</a>
-                <a href="#">Contact</a>
-              </nav>
-            </div>
-
-            <div class="header-right">
-                <p><a id="loginLink" href="/login" class="dropdown-link">Login</a><a id="registerLink" href="/signup" class="dropdown-link">Register</a></p>
-            </div>
-            </div>
-          </div>
-        </header>
-        <section class="clearfix">
-        </section>
-
-        <div class="searchStyle">
-            <p class="heading">Your beauty, your choice</p>
-            <form id="search" action="/" method="POST" >
-                <input type="hidden" name="_method" value="put" />
-                <div id="searchContainer" style="overflow: hidden; padding-top: 10px;">
-                    <input type="text" name="location" ng-model="location" placeholder="City"/>
-                    <input type="text" name="serviceType" ng-model="serviceType" placeholder="Service Type"/>
-                    <input id="searchBtn" type="submit" value="Search" />
-                </div>
-            </form>
-
-            <br>
-        </div>
-    </div>
-
-    404
-    404
-    404
-    404
-
-    <div id="footerStyle">
-        <div class="row">
-            <div class="six columns">
-                <h1>Stylinger</h1>
-                <p class="textFooter">Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem.</p>
-            </div>
-
-            <div class="six columns" id="footerWhite">
-                <nav>
-                  <a href="#">Get Listed</a>
-                  <a href="#">Meet the team</a>
-                  <a href="#">Contact</a>
-                </nav>
-
-                <div id="contactFooter">
-                    <p>(+45) 52 80 81 19</p>
-                    <p>hello@stylinger.com</p>
-                    <p>Paludan Müllers Vej 85, 8210, Aarhus</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <hr>
-
-            <p>Stylinger @ 2015 / Copyright</p>
-        </div>
-    </div>
-
+  <main>
+    <h1>500 - Server Error</h1>
+  </main>
+<script>
+  var navigation = $('#nav-main').okayNav();
+</script>
 </body>
 </html>

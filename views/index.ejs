@@ -1,215 +1,40 @@
 <!doctype html>
 <html ng-app="myApp">
 <head>
-    <title>Stylinger</title>
+    <title>Push Notification</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https:////maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <!-- okeyNav -->
+    <link rel="stylesheet" href="./css/okayNav.min.css" media="screen">
+    <script src="./js/jquery.okayNav.js"></script>
 
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/menu.css">
-
     <script src="./controller/index.js"></script>
-    <script src="./controller/geolocation.js"></script>
+
 </head>
 <body ng-controller="indexController">
-  <div class="wrapper">
-      <div class="container">
+    <header id="header">
+        <nav role="navigation" id="nav-main" class="okayNav">
+            <ul>
+                <li><a href="/news">NEWS</a></li>
+                <li><a href="/newsList">NEWS List</a></li>
+                <li><a href="/patients">Patients List</a></li>
+                <li><a href="/send">Send Message</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <header class="clearfix">
-          <div class="container">
+    </br>
 
-            <a id="logo" href="/"><h1>Stylinger</h1></a>
-
-            <div class="header-left">
-              <label for="open">
-                <span class="hidden-desktop"></span>
-              </label>
-              <input type="checkbox" name="" id="open">
-              <nav>
-                <a href="getlisted">Get Listed</a>
-                <a href="#">Meet the team</a>
-                <a href="#">Contact</a>
-              </nav>
-            </div>
-
-            <% if (!user) { %>
-            <div class="header-right">
-                <p><a id="loginLink" href="/login" class="dropdown-link">Login</a><a id="registerLink" href="/signup" class="dropdown-link">Register</a></p>
-            </div>
-            <% } else { %>
-            <div class="header-right">
-              <div class="button-dropdown">Hi, <%= user.local.profile.firstname %> &#x25BC;
-                  <ul class="dropdown">
-                    <li><a href="/profile" class="dropdown-link">My Profile</a></li>
-                    <li><a href="/bookings" class="dropdown-link">My Bookings</a></li>
-                    <li><a href="/reviews" class="dropdown-link">My Reviews</a></li>
-                    <li><a href="/logout" class="dropdown-link">Logout</a></li>
-                  </ul>
-              </div>
-            </div>
-            <% } %>
-          </div>
-      </div>
-      </header>
-      <section class="clearfix">
-      </section>
-
-      <div class="searchStyle">
-          <p class="heading">Your beauty, your choice</p>
-          <form id="search" action="/results" method="get" >
-              <div id="searchContainer" style="overflow: hidden; padding-top: 10px;">
-                  <input type="text" name="location" ng-model="location" placeholder="City or ZIP" required/>
-                  <select name="serviceType" ng-model="serviceType"  ng-options="option.value as option.name for option in typeOptions" class="dropdownSearch" required></select>
-                  <input id="searchBtn" type="submit" value="Search" />
-              </div>
-          </form>
-
-          <br>
-      </div>
-
-      <div class="scroll">
-          <p>SCROLL</p>
-          <img src="./css/img/scrollS.png" alt="Scroll"/>
-      </div>
-
-    </div>
-
-    <div class="rowContent">
-          <p class="headerHome">Explore the beauty world in {{address}}</p>
-
-          <section id="content">
-            <img src="./css/img/hairdresserS.png"/>
-            <p>Hairdresser</p>
-            <p>78 listed</p>
-          </section>
-
-          <section id="middle">
-            <img src="./css/img/spaS.png"/>
-            <p>Spa</p>
-            <p>19 listed</p>
-          </section>
-
-          <aside id="sidebar">
-            <img src="./css/img/barberS.png"/>
-            <p>Barbershop</p>
-            <p>11 listed</p>
-          </aside>
-
-          <form action="/" method="POST" >
-              <input type="hidden" name="_method" value="put" />
-              <input type="hidden" name="location" value="{{address}}"/>
-              <input id="searchBtn" type="submit" value="View All Listings" />
-          </form>
-    </div>
-
-    <div class="rowContentSecond">
-        <p class="headerHomeSlanted">Business Owner? This is how it works</p>
-
-        <section id="content">
-          <div id="borderdColumn">
-            <div id="whiteBkg">
-              <span class="idContent">1</span>
-              <p class="descTitle">Get your business listed</p>
-              <p class="bodyTitle">Using the inquiry form on the website</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="middle">
-          <div id="borderdColumn">
-            <div id="whiteBkg">
-              <span class="idContent">2</span>
-              <p class="descTitle">We'll help you grow</p>
-              <p class="bodyTitle">Offering you an excellent booking system</p>
-            </div>
-          </div>
-        </section>
-
-        <aside id="sidebar">
-          <div id="borderdColumn">
-            <div id="whiteBkg">
-              <span class="idContent">3</span>
-              <p class="descTitle">Track your business</p>
-              <p class="bodyTitle">Get insights on your performance</p>
-            </div>
-          </div>
-        </aside>
-
-        <div class="contentInContent">
-          <p class="contentTitle">Join us</p>
-          <hr class="titleUnderline">
-          <p>We know that you're busy running your business. That's why Stylinger is designed to help you receive and manage more bookings, so you'll grow along with us. We want your customers to feel they get the best out of your services.</p>
-          <p>List your business now, or read more about our product.</p>
-          <br>
-          <a href="#" /><input id="searchBtn" type="submit" value="Get listed" /></a>
-          <a href="#" /><input id="searchBtn" type="submit" value="Read more" /></a>
-
-        </div>
-    </div>
-
-    <div class="rowContentThird">
-        <p class="headerHomeSlanted2">Meet the Team</p>
-        <section class="towColL">
-          <div id="borderdColumn">
-            <div id="idContent">
-              <p class="contentTitleSecond">Team</p>
-              <p class="thirdTitle">The Story of the <i>Foudners</i></p>
-              <br>
-              <p class="textP">Georgian and Luiza founded Stylinger as their struggle of finding wellness and health services in a foreig country proved diffcult.</p>
-              <br>
-              <p class="textP">Georgian and Luiza founded Stylinger as their struggle of finding wellness and health services in a foreig country proved diffcult.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="twoColR">
-          <div id="borderdColumn">
-            <div id="idContent">
-              <p class="contentTitleSecond">Team</p>
-              <p class="thirdTitle">Our <i>Values</i></p>
-              <br>
-              <p class="textP">Georgian and Luiza founded Stylinger as their struggle of finding wellness and health services in a foreig country proved diffcult.</p>
-              <br>
-              <p class="textP">Georgian and Luiza founded Stylinger as their struggle of finding wellness and health services in a foreig country proved diffcult.</p>
-            </div>
-            <!-- <img src="./css/img/team.png"/> -->
-          </div>
-        </section>
-        <br>
-        <a href="#" /><input id="searchBtn" type="submit" value="Meet the founders" /></a>
-    </div>
-
-    <div id="footerStyle">
-        <div class="row">
-            <div class="six columns">
-                <h1>Stylinger</h1>
-                <p class="textFooter">Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem. Lorem ipsul more lorem abos lorem.</p>
-            </div>
-
-            <div class="six columns" id="footerWhite">
-                <nav>
-                  <a href="#">Get Listed</a>
-                  <a href="#">Meet the team</a>
-                  <a href="#">Contact</a>
-                </nav>
-
-                <div id="contactFooter">
-                    <p>(+45) 52 80 81 19</p>
-                    <p>hello@stylinger.com</p>
-                    <p>Paludan Müllers Vej 85, 8210, Aarhus</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <hr>
-
-            <p>Stylinger @ 2015 / Copyright</p>
-        </div>
-    </div>
-
+    <main>
+        <h1>Index</h1>
+    </main>
+<script>
+  var navigation = $('#nav-main').okayNav();
+</script>
 </body>
 </html>
