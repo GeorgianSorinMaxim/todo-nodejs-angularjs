@@ -104,6 +104,7 @@ module.exports = function(app, passport) {
         });
 
         var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
+        // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
         var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
         // console.log(message);
@@ -149,6 +150,7 @@ module.exports = function(app, passport) {
                 });
 
                 var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
+                // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
                 var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
                 console.log(message);
@@ -177,14 +179,14 @@ module.exports = function(app, passport) {
     // POST Patients page
     app.post('/patients', function(req, res, next) {
         var cpr = req.body.cpr;
-        var firstname = req.body.firstname;
-        var lastname = req.body.lastname;
-        var triage = req.body.triage;
-        var diagnosis = req.body.diagnosis;
-        var doctor = req.body.doctor;
-        var address = req.body.address;
-        var city = req.body.city;
-        var zip = req.body.zip;
+        var firstname = req.body.firstname.value;
+        var lastname = req.body.lastname.value;
+        var triage = req.body.triage.value;
+        var diagnosis = req.body.diagnosis.value;
+        var doctor = req.body.doctor.value;
+        var address = req.body.address.value;
+        var city = req.body.city.value;
+        var zip = req.body.zip.value;
 
         var patient = new Patient();
         patient.cpr = cpr;
@@ -248,6 +250,7 @@ module.exports = function(app, passport) {
         var systolic = req.body.systolic;
         var heartRate = req.body.heartRate;
         var consciousness = req.body.consciousness;
+        var score = parseInt(respiration) + parseInt(oxygenSat) + parseInt(oxygen) + parseInt(temp) + parseInt(systolic) + parseInt(heartRate) + parseInt(consciousness);
 
         var patientToks = new PatientNews();
         patientToks.cpr = cpr;
@@ -260,17 +263,19 @@ module.exports = function(app, passport) {
         patientToks.systolic = systolic;
         patientToks.heartRate = heartRate;
         patientToks.consciousness = consciousness;
+        patientToks.score = score;
 
         // SEND GCM PUSH NOTIFICATION
         var message = new gcm.Message();
         message.addNotification({
           title: 'NEWS Registered',
-          body: 'By ' + firstname + ' ' + lastname + ' CPR: ' + cpr,
+          body: 'Score: ' + score + ' registered by ' + firstname + ' ' + lastname + ' CPR: ' + cpr,
           icon: 'icon',
           sound: 'default'
         });
 
         var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
+        // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
         var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
         sender.send(message, { registrationTokens: regTokens }, function (err, response) {

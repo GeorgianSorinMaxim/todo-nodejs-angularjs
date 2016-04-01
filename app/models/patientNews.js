@@ -11,7 +11,8 @@ var patientNews = mongoose.Schema({
     temperature: { type: String, default: '' },
     systolic: { type: String, default: '' },
     heartRate: { type: String, default: '' },
-    consciousness: { type: String, default: '' }
+    consciousness: { type: String, default: '' },
+    score: { type: String, default: '' }
 });
 
 module.exports = mongoose.model('PatientNews', patientNews);

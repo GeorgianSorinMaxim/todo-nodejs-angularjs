@@ -15,7 +15,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: '≥25', value: '3' }
     ];
 
-    $scope.resp = $scope.respirationOptions[0].value;
+    // $scope.resp = $scope.respirationOptions[0].value;
 
 	// Oxygen Saturations
     $scope.oxySatOptions = [
@@ -25,7 +25,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: '≥96', value: '0' }
     ];
 
-    $scope.oxyS = $scope.oxySatOptions[0].value;
+    // $scope.oxyS = $scope.oxySatOptions[0].value;
 
 	// Any Supplemental Oxygen
     $scope.oxyOptions = [
@@ -33,7 +33,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: 'No', value: '0' },
     ];
 
-    $scope.oxy = $scope.oxyOptions[0].value;
+    // $scope.oxy = $scope.oxyOptions[0].value;
 
 	// Temperature
     $scope.tempOptions = [
@@ -44,7 +44,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: '≥39.1', value: '2' }
     ];
 
-    $scope.temp = $scope.tempOptions[0].value;
+    // $scope.temp = $scope.tempOptions[0].value;
 
     // Systloc BP
     $scope.sysOptions = [
@@ -55,7 +55,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: '≥220', value: '3' }
     ];
 
-    $scope.sys = $scope.sysOptions[0].value;
+    // $scope.sys = $scope.sysOptions[0].value;
 
     // Systloc BP
     $scope.hrOptions = [
@@ -67,7 +67,7 @@ myApp.controller("newsController", function($scope, $http) {
         { name: '≥131', value: '3' }
     ];
 
-    $scope.hr = $scope.hrOptions[0].value;
+    // $scope.hr = $scope.hrOptions[0].value;
 
     // Level of Consciousness
     $scope.conscOptions = [
@@ -75,6 +75,6 @@ myApp.controller("newsController", function($scope, $http) {
         { name: 'V,P or U', value: '3' },
     ];
 
-    $scope.cons = $scope.conscOptions[0].value;
+    // $scope.cons = $scope.conscOptions[0].value;
 
 });
