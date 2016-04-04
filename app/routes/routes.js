@@ -103,8 +103,8 @@ module.exports = function(app, passport) {
     });
 
     // GET Device with ID page
-    app.get('/api/devices/:regid', function(req, res) {
-        var regid = req.params.regid;
+    app.get('/api/devices/:id', function(req, res) {
+        var regid = req.params.id;
         Device.find({ "regid": ObjectId(regid) }, function(err, device) {
             if (err)
                 res.send(err);
