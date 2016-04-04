@@ -102,6 +102,16 @@ module.exports = function(app, passport) {
         });
     });
 
+    // GET Device with ID page
+    app.get('/api/devices/:id', function(req, res) {
+        var id = req.params.id;
+        Device.find({ "_id": ObjectId(id) }, function(err, device) {
+            if (err)
+                res.send(err);
+            res.json(device);
+        });
+    });
+
     // POST GCM Push Notification page
     // Documentation: https://github.com/ToothlessGear/node-gcm
     app.post('/sent', function(req, res, next) {
