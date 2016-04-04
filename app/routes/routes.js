@@ -246,9 +246,9 @@ module.exports = function(app, passport) {
         });
     });
 
-    // Create a device (accessed at POST http://localhost:3000/api/device)
-    app.post('/api/devices/:id', function(req, res, next) {
-        var regid = req.params.id;
+    // Create a device (accessed at POST http://localhost:3000/api/device/id)
+    app.post('/api/devices/:regid', function(req, res, next) {
+        var regid = req.params.regid;
             
         var device = new Device();
         device.regid = regid;
