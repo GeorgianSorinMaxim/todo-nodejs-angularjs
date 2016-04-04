@@ -248,6 +248,8 @@ module.exports = function(app, passport) {
     // Create a device (accessed at POST http://localhost:3000/api/devices/regid)
     app.post('/api/devices/', function(req, res, next) {
         var regid = req.body.regid;
+
+        console.log(req.body);
             
         var device = new Device();
         device.regid = regid;
