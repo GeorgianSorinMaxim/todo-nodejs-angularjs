@@ -105,10 +105,11 @@ module.exports = function(app, passport) {
     // GET Device with ID page
     app.get('/api/devices/:id', function(req, res) {
         var regid = req.params.id;
-        Device.find({ "regid": ObjectId(regid) }, function(err, device) {
-            if (err)
+        mongoose.model('Device').find({ "regid": regid }, function (err, device) {
+          if (err)
                 res.send(err);
             res.json(device);
+
         });
     });
 
