@@ -11,6 +11,12 @@ var url = 'mongodb://admin:admin@ds021999.mlab.com:21999/prototypedb';
 
 var Patient = require('../models/patient');
 var PatientNews = require('../models/patientNews');
+var Device = require('../models/device');
+
+var regTokens = ['dwi1T9u3hQM:APA91bEeO94YRuTfCSiDNtSU3-gPJ84VdQ39UYG4AgqQO5wgdH5c_k-1V4rI52SH35lpG9QQ0IAcHrVMp6ig-ef9o8bWPa3SxtYuIDbdsiDpX3qCTxNGcWNu94It3K_EXZtHTIQiFBIgMsYgjaFYsGWtikvj9GQRyw'];
+var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
+// var sender = new gcm.Sender('DEV-a7659a8b-4ee4-4071-8653-dfa762fa61a6');
+
 
 module.exports = function(app, passport) {
 
@@ -86,6 +92,16 @@ module.exports = function(app, passport) {
         });
     });
 
+    // GET Devices page
+    app.get('/api/devices', function(req, res) {
+        Device.find(function(err, devices) {
+            if (err)
+                res.send(err);
+
+            res.json(devices);
+        });
+    });
+
     // POST GCM Push Notification page
     // Documentation: https://github.com/ToothlessGear/node-gcm
     app.post('/sent', function(req, res, next) {
@@ -102,10 +118,6 @@ module.exports = function(app, passport) {
           icon: 'icon',
           sound: 'default'
         });
-
-        var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
-        // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
-        var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
         // console.log(message);
 
@@ -148,10 +160,6 @@ module.exports = function(app, passport) {
                   icon: 'icon',
                   sound: 'default'
                 });
-
-                var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
-                // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
-                var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
                 console.log(message);
 
@@ -238,6 +246,22 @@ module.exports = function(app, passport) {
         });
     });
 
+    // Create a device (accessed at POST http://localhost:3000/api/device)
+    app.post('/api/devices/:id', function(req, res, next) {
+        var regid = req.params.id;
+            
+        var device = new Device();
+        device.regid = regid;
+
+        // Save the device and check for errors
+        device.save(function(err) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 'Device created!' });
+        });
+    });
+
     // POST NEWS page
     app.post('/news', function(req, res, next) {
         var cpr = req.body.cpr;
@@ -273,10 +297,6 @@ module.exports = function(app, passport) {
           icon: 'icon',
           sound: 'default'
         });
-
-        var regTokens = ['dwi1T9u3hQM:APA91bEkWQRqhP3wJ8Vi2NXDEjhPWV3fjeTeU6lPeFOFVxui0K1tbKkv7RuPZbuZZTiQ9DojkbxBPMRi12kDdZd_HNnviWyP59NEttTiFF42m3i5KDuLxdXwjEw13mNNoYyVFond0dCV'];
-        // var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
-        var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 
         sender.send(message, { registrationTokens: regTokens }, function (err, response) {
             if(err) console.error(err);
