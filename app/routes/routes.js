@@ -13,7 +13,7 @@ var Patient = require('../models/patient');
 var PatientNews = require('../models/patientNews');
 var Device = require('../models/device');
 
-var regTokens = ['dwi1T9u3hQM:APA91bEeO94YRuTfCSiDNtSU3-gPJ84VdQ39UYG4AgqQO5wgdH5c_k-1V4rI52SH35lpG9QQ0IAcHrVMp6ig-ef9o8bWPa3SxtYuIDbdsiDpX3qCTxNGcWNu94It3K_EXZtHTIQiFBIgMsYgjaFYsGWtikvj9GQRyw'];
+var regTokens = [];
 var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 // var sender = new gcm.Sender('DEV-a7659a8b-4ee4-4071-8653-dfa762fa61a6');
 
@@ -121,26 +121,37 @@ module.exports = function(app, passport) {
         var receiver = req.body.receiver;
         // console.log(datatitle,datamsg,receiver);
 
-        // SEND GCM PUSH NOTIFICATION
-        var message = new gcm.Message();
-        message.addNotification({
-          title: '' + datatitle + '',
-          body: '' + datamsg + '',
-          icon: 'icon',
-          sound: 'default'
-        });
+        Device.find(function (err, devices) {
+            if (err) return err;
+            devices.forEach(function (item) {
+                var stringregid = "dwi1T9u3hQM:"+item.regid;
+                // console.log("SID", stringregid);
+                regTokens.push(stringregid);
+                // console.log("ALL", regTokens);
+            });
 
-        // console.log(message);
+            // SEND GCM PUSH NOTIFICATION
+            var message = new gcm.Message();
+            message.addNotification({
+              title: '' + datatitle + '',
+              body: '' + datamsg + '',
+              icon: 'icon',
+              sound: 'default'
+            });
 
-        sender.send(message, { registrationTokens: regTokens }, function (err, response) {
-            if(err) console.error(err);
-            else    console.log(response);
-        });
+            // console.log(message);
 
-        res.render('sent.ejs', {
-            "title" : datatitle,
-            "msg" : datamsg,
-            "receiver" : receiver
+            sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+                if(err) console.error(err);
+                else    console.log(response);
+            });
+
+            res.render('sent.ejs', {
+                "title" : datatitle,
+                "msg" : datamsg,
+                "receiver" : receiver
+            });
+
         });
     });
 
@@ -162,32 +173,42 @@ module.exports = function(app, passport) {
 
                 console.log("PATIENT: ", patient);
 
-                // SEND GCM PUSH NOTIFICATION
-                var message = new gcm.Message();
-                message.addNotification({
-                  title: 'Triage Update',
-                  body: 'Triage level changed from ' + patient[0].triage + ' to ' + triageD + ' for the patient ' + patient[0].firstname + ' ' + patient[0].lastname,
-                  icon: 'icon',
-                  sound: 'default'
-                });
+                Device.find(function (err, devices) {
+                    if (err) return err;
+                    devices.forEach(function (item) {
+                        var stringregid = "dwi1T9u3hQM:"+item.regid;
+                        // console.log("SID", stringregid);
+                        regTokens.push(stringregid);
+                        // console.log("ALL", regTokens);
+                    });
 
-                console.log(message);
+                    // SEND GCM PUSH NOTIFICATION
+                    var message = new gcm.Message();
+                    message.addNotification({
+                      title: 'Triage Update',
+                      body: 'Triage level changed from ' + patient[0].triage + ' to ' + triageD + ' for the patient ' + patient[0].firstname + ' ' + patient[0].lastname,
+                      icon: 'icon',
+                      sound: 'default'
+                    });
 
-                sender.send(message, { registrationTokens: regTokens }, function (err, response) {
-                    if(err) console.error(err);
-                    else    console.log(response);
-                });
+                    console.log(message);
 
-                patient[0].cpr = cprp || '';
-                patient[0].firstname = firstn || '';
-                patient[0].lastname = lastn || '';
-                patient[0].diagnosis = diagn || '';
-                patient[0].triage = triageD || '';
+                    sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+                        if(err) console.error(err);
+                        else    console.log(response);
+                    });
 
-                patient[0].save(function(err) {
-                    if (err) return next(err);
-                    res.render('patient.ejs', {
-                        "patient" : patient
+                    patient[0].cpr = cprp || '';
+                    patient[0].firstname = firstn || '';
+                    patient[0].lastname = lastn || '';
+                    patient[0].diagnosis = diagn || '';
+                    patient[0].triage = triageD || '';
+
+                    patient[0].save(function(err) {
+                        if (err) return next(err);
+                        res.render('patient.ejs', {
+                            "patient" : patient
+                        });
                     });
                 });
               }
@@ -301,23 +322,36 @@ module.exports = function(app, passport) {
         patientToks.consciousness = consciousness;
         patientToks.score = score;
 
-        // SEND GCM PUSH NOTIFICATION
-        var message = new gcm.Message();
-        message.addNotification({
-          title: 'NEWS Registered',
-          body: 'Score: ' + score + ' registered by ' + firstname + ' ' + lastname + ' CPR: ' + cpr,
-          icon: 'icon',
-          sound: 'default'
-        });
+        Device.find(function (err, devices) {
+            if (err) return err;
+            devices.forEach(function (item) {
+                var stringregid = "dwi1T9u3hQM:"+item.regid;
+                // console.log("SID", stringregid);
+                regTokens.push(stringregid);
+                // console.log("ALL", regTokens);
+            });
 
-        sender.send(message, { registrationTokens: regTokens }, function (err, response) {
-            if(err) console.error(err);
-            else    console.log(response);
-        });
 
-        patientToks.save(function(err) {
-            if (err) return next(err);
-            res.render('newsRegistered.ejs', {
+            // SEND GCM PUSH NOTIFICATION
+            var message = new gcm.Message();
+            message.addNotification({
+              title: 'NEWS Registered',
+              body: 'Score: ' + score + ' registered by ' + firstname + ' ' + lastname + ' CPR: ' + cpr,
+              icon: 'icon',
+              sound: 'default'
+            });
+
+            sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+                if(err) console.error(err);
+                else    console.log(response);
+            });
+
+            console.log(message);
+
+            patientToks.save(function(err) {
+                if (err) return next(err);
+                res.render('newsRegistered.ejs', {
+                });
             });
         });
     });
