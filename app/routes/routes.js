@@ -12,6 +12,7 @@ var url = 'mongodb://admin:admin@ds021999.mlab.com:21999/prototypedb';
 var Patient = require('../models/patient');
 var PatientNews = require('../models/patientNews');
 var Device = require('../models/device');
+var Test = require('../models/test');
 
 var regTokens = [];
 var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
@@ -99,6 +100,16 @@ module.exports = function(app, passport) {
                 res.send(err);
 
             res.json(devices);
+        });
+    });
+
+    // GET Test page
+    app.get('/api/tests', function(req, res) {
+        Test.find(function(err, tests) {
+            if (err)
+                res.send(err);
+
+            res.json(tests);
         });
     });
 
@@ -292,6 +303,24 @@ module.exports = function(app, passport) {
                 res.send(err);
 
             res.json({ message: 'Device created!' });
+        });
+    });
+
+    // Create a test (accessed at POST http://localhost:3000/api/devices/name)
+    app.post('/api/tests', function(req, res, next) {
+        var name = req.body.name;
+
+        console.log(req.body);
+            
+        var test = new Test();
+        test.name = name;
+
+        // Save the device and check for errors
+        test.save(function(err) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 'Test created!' });
         });
     });
 
