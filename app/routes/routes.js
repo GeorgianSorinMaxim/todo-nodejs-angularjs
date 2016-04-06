@@ -14,7 +14,6 @@ var PatientNews = require('../models/patientNews');
 var Device = require('../models/device');
 var Test = require('../models/test');
 
-var regTokens = [];
 var sender = new gcm.Sender('AIzaSyB4cQyVIO0PCwKXZDs9ivMUxXkLNTCF2m4');
 // var sender = new gcm.Sender('DEV-a7659a8b-4ee4-4071-8653-dfa762fa61a6');
 
@@ -130,6 +129,8 @@ module.exports = function(app, passport) {
         var datatitle = req.body.title;
         var datamsg = req.body.msg;
         var receiver = req.body.receiver;
+        var regTokens = [];
+
         // console.log(datatitle,datamsg,receiver);
 
         Device.find(function (err, devices) {
@@ -140,6 +141,8 @@ module.exports = function(app, passport) {
                 regTokens.push(stringregid);
                 // console.log("ALL", regTokens);
             });
+
+            console.log("regTokens ", regTokens);
 
             // SEND GCM PUSH NOTIFICATION
             var message = new gcm.Message();
@@ -172,6 +175,7 @@ module.exports = function(app, passport) {
         var lastn = req.body.lastn;
         var diagn = req.body.diagn;
         var triageD = req.body.triageD;
+        var regTokens = [];
 
         // console.log("Patient", cpr, firstn, lastn, diagn, triageD);
 
@@ -192,6 +196,8 @@ module.exports = function(app, passport) {
                         regTokens.push(stringregid);
                         // console.log("ALL", regTokens);
                     });
+
+                    console.log("regTokens ", regTokens);
 
                     // SEND GCM PUSH NOTIFICATION
                     var message = new gcm.Message();
@@ -337,6 +343,7 @@ module.exports = function(app, passport) {
         var heartRate = req.body.heartRate;
         var consciousness = req.body.consciousness;
         var score = parseInt(respiration) + parseInt(oxygenSat) + parseInt(oxygen) + parseInt(temp) + parseInt(systolic) + parseInt(heartRate) + parseInt(consciousness);
+        var regTokens = [];
 
         var patientToks = new PatientNews();
         patientToks.cpr = cpr;
@@ -360,6 +367,7 @@ module.exports = function(app, passport) {
                 // console.log("ALL", regTokens);
             });
 
+            console.log("regTokens ", regTokens);
 
             // SEND GCM PUSH NOTIFICATION
             var message = new gcm.Message();
