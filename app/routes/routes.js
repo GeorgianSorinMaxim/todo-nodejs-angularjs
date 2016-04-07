@@ -461,6 +461,58 @@ module.exports = function(app, passport) {
         });
     });
 
+    // DELETE NEWS with patient cpr
+    app.delete('/news/:cpr', function(req, res) {
+      PatientNews.remove({
+        cpr: req.params.cpr
+      }, function(err, news) {
+        if (err) {
+          return res.send(err);
+        }
+
+        res.json({ message: 'Successfully deleted' });
+      });
+    });
+
+    // DELETE API NEWS with patient cpr
+    app.delete('/api/news/:cpr', function(req, res) {
+      PatientNews.remove({
+        cpr: req.params.cpr
+      }, function(err, news) {
+        if (err) {
+          return res.send(err);
+        }
+
+        res.json({ message: 'Successfully deleted' });
+      });
+    });
+
+    // DELETE API Patient with patient cpr
+    app.delete('/api/patients/:cpr', function(req, res) {
+      Patient.remove({
+        cpr: req.params.cpr
+      }, function(err, news) {
+        if (err) {
+          return res.send(err);
+        }
+
+        res.json({ message: 'Patient uccessfully deleted' });
+      });
+    });
+
+    // DELETE Patient with patient cpr
+    app.delete('/patients/:cpr', function(req, res) {
+      Patient.remove({
+        cpr: req.params.cpr
+      }, function(err, news) {
+        if (err) {
+          return res.send(err);
+        }
+
+        res.json({ message: 'Patient uccessfully deleted' });
+      });
+    });
+    
     // Handle 404
     app.use(function(req, res) {
         res.status(404);

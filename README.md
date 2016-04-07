@@ -1,14 +1,19 @@
 How to deploy the Node.js framework:
 
   - Install (if you have Node.js installed)
-- 
-npm install
+Download and install Node.js from here: https://nodejs.org/en/download/
 
-  - Deploy locally
+  - Install the project and its dependecies, by opening the terminal and navigating to the project folder:
+cd FOLDER_PATH
+npm install --save
+
+  - Deploy locally by running in the terminal when being in the project folder:
 node app.js
 npm start
+  - Open the browser and go to the following URL: http://localhost:3000/
 
-  - Deploy on Heroku (https://secure-badlands-18077.herokuapp.com/)
+	(https://secure-badlands-18077.herokuapp.com/) 
+  - Deploy on Heroku by running in the terminal when being in the project folder:
 git add . 
 git rm -r --cached node_modules
 git commit -m "Another commit"
