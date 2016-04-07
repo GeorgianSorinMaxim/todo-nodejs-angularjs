@@ -10,14 +10,17 @@
     <link rel="stylesheet" href="./css/okayNav.min.css" media="screen">
     <script src="./js/jquery.okayNav.js"></script>
 
-
     <link rel="stylesheet" href="../../css/style.css">
     <script>
 
       var myApp = angular.module("myApp", []);
 
       myApp.controller("resultsController", function($scope, $http) {
-
+        $scope.cpr = <%- JSON.stringify(cpr) %>;
+        $scope.firstname = <%- JSON.stringify(firstname) %>;
+        $scope.lastname = <%- JSON.stringify(lastname) %>;
+        $scope.triageOld = <%- JSON.stringify(triageOld) %>;
+        $scope.triage = <%- JSON.stringify(triage) %>;
       });
     </script>
 </head>
@@ -36,7 +39,7 @@
     </br></br></br>
 
     <main>
-      <p class="alert-success">Patient data updated.</p>
+      <p class="alert-success">Triage for the patient {{cpr}} - {{firstname}} {{lastname}} updated to {{triage}} from {{triageOld}}.</p>
     </main>
 <script>
   var navigation = $('#nav-main').okayNav();

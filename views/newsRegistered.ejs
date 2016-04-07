@@ -17,7 +17,7 @@
       var myApp = angular.module("myApp", []);
 
       myApp.controller("resultsController", function($scope, $http) {
-
+        $scope.patient = <%- JSON.stringify(patientToks) %>;
       });
     </script>
 </head>
@@ -36,7 +36,7 @@
     </br></br></br>
 
     <main>
-      <p class="alert-success">NEWS Registered in the system.</p>
+      <p class="alert-success">NEWS with the score {{patient.score}} registered by the patient {{patient.cpr}} - {{patient.firstname}} {{patient.lastname}}.</p>
     </main>
 <script>
   var navigation = $('#nav-main').okayNav();

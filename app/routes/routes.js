@@ -160,12 +160,11 @@ module.exports = function(app, passport) {
                 else    console.log(response);
             });
 
-            res.render('sent.ejs', {
-                "title" : datatitle,
-                "msg" : datamsg,
-                "receiver" : receiver
-            });
+        });
 
+        res.render('sent.ejs', {
+            title : req.body.title,
+            message : req.body.msg
         });
     });
 
@@ -215,6 +214,8 @@ module.exports = function(app, passport) {
                         else    console.log(response);
                     });
 
+                    var oldTriage = patient[0].triage;
+
                     patient[0].cpr = cprp || '';
                     patient[0].firstname = firstn || '';
                     patient[0].lastname = lastn || '';
@@ -224,7 +225,11 @@ module.exports = function(app, passport) {
                     patient[0].save(function(err) {
                         if (err) return next(err);
                         res.render('patient.ejs', {
-                            "patient" : patient
+                            "cpr" : cprp,
+                            "firstname" : firstn,
+                            "lastname" : lastn,
+                            "triage" : triageD,
+                            "triageOld" : oldTriage
                         });
                     });
                 });
@@ -387,12 +392,74 @@ module.exports = function(app, passport) {
 
             patientToks.save(function(err) {
                 if (err) return next(err);
-                res.render('newsRegistered.ejs', {
+                res.render('newsRegistered.ejs', { 
+                    "patientToks" : patientToks 
                 });
             });
         });
     });
 
+    // POST API NEWS page
+    app.post('/api/news', function(req, res, next) {
+        var cpr = req.body.cpr;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var respiration = req.body.respiration;
+        var oxygenSat = req.body.oxygenSat;
+        var oxygen = req.body.oxygen;
+        var temp = req.body.temp;
+        var systolic = req.body.systolic;
+        var heartRate = req.body.heartRate;
+        var consciousness = req.body.consciousness;
+        var score = parseInt(respiration) + parseInt(oxygenSat) + parseInt(oxygen) + parseInt(temp) + parseInt(systolic) + parseInt(heartRate) + parseInt(consciousness);
+        var regTokens = [];
+
+        var patientToks = new PatientNews();
+        patientToks.cpr = cpr;
+        patientToks.firstname = firstname;
+        patientToks.lastname = lastname;
+        patientToks.respiration = respiration;
+        patientToks.oxygenSat = oxygenSat;
+        patientToks.oxygen = oxygen;
+        patientToks.temperature = temp;
+        patientToks.systolic = systolic;
+        patientToks.heartRate = heartRate;
+        patientToks.consciousness = consciousness;
+        patientToks.score = score;
+
+        Device.find(function (err, devices) {
+            if (err) return err;
+            devices.forEach(function (item) {
+                var stringregid = "dwi1T9u3hQM:"+item.regid;
+                regTokens.push(stringregid);
+            });
+
+            console.log("regTokens ", regTokens);
+
+            // SEND GCM PUSH NOTIFICATION
+            var message = new gcm.Message();
+            message.addNotification({
+              title: 'NEWS Registered',
+              body: 'Score: ' + score + ' registered by ' + firstname + ' ' + lastname + ' CPR: ' + cpr,
+              icon: 'icon',
+              sound: 'default'
+            });
+
+            sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+                if(err) console.error(err);
+                else    console.log(response);
+            });
+
+            console.log(message);
+
+            patientToks.save(function(err) {
+                if (err) return next(err);
+                res.render('newsRegistered.ejs', { 
+                    "patientToks" : patientToks 
+                });
+            });
+        });
+    });
 
     // Handle 404
     app.use(function(req, res) {
