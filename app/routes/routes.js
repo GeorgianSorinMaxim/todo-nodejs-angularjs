@@ -240,14 +240,14 @@ module.exports = function(app, passport) {
     // POST Patients page
     app.post('/patients', function(req, res, next) {
         var cpr = req.body.cpr;
-        var firstname = req.body.firstname.value;
-        var lastname = req.body.lastname.value;
-        var triage = req.body.triage.value;
-        var diagnosis = req.body.diagnosis.value;
-        var doctor = req.body.doctor.value;
-        var address = req.body.address.value;
-        var city = req.body.city.value;
-        var zip = req.body.zip.value;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var triage = req.body.triage;
+        var diagnosis = req.body.diagnosis;
+        var doctor = req.body.doctor;
+        var address = req.body.address;
+        var city = req.body.city;
+        var zip = req.body.zip;
 
         var patient = new Patient();
         patient.cpr = cpr;
@@ -496,7 +496,7 @@ module.exports = function(app, passport) {
           return res.send(err);
         }
 
-        res.json({ message: 'Patient uccessfully deleted' });
+        res.json({ message: 'Patient successfully deleted' });
       });
     });
 
@@ -508,11 +508,32 @@ module.exports = function(app, passport) {
         if (err) {
           return res.send(err);
         }
-
-        res.json({ message: 'Patient uccessfully deleted' });
+        res.json({ message: 'Patient successfully deleted' });
       });
     });
-    
+
+    app.get('/patients/:cpr', function(req, res) {
+       Patient.remove({
+          cpr: req.params.cpr
+       }, function(err, patient) {
+          if (err) {
+            return res.send(err);
+          }
+       });
+
+        // mongoose.model('Patient').find(function (err, patients) {
+        //       if (err) {
+        //           return console.error(err);
+        //       } else {
+        //           res.render('patients.ejs', {
+        //               "patients" : patients
+        //           });
+        //       }
+        // });
+        res.redirect('/patients');
+    });
+
+
     // Handle 404
     app.use(function(req, res) {
         res.status(404);

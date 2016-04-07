@@ -57,7 +57,12 @@
               <input type="text" name="diagn" ng-model="patient.diagnosis" /> 
               <select name="triageD" ng-model="patient.triage" ng-options="option.value as option.name for option in triageOptions"></select>
               <button type="submit" class="button"/>Update Patient</button> 
+              <a href="/patients/{{patient.cpr}}/" class="buttonRed"/>Delete Patient</a> 
           </form>
+<!--           <form class="" method="DELETE">
+              <input name="_method" type="hidden" value="DELETE">
+              <a href="/patients/{{patient.cpr}}/" class="buttonRed"/>Delete Patient</a> 
+          </form> -->
       </div>
 
       <h1>Add New Patient</h1>

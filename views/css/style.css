@@ -55,8 +55,12 @@ input[type=submit]:disabled { background-color: #bababa; color: #fff; border: 1p
 .labelForm { min-width: 200px; display: -webkit-inline-box; }
 
 .buttons { }
-.button { margin-top: 10px; background-color: #1b89bf; color: #fff; border: none; font-family: Roboto, Georgia; text-decoration: none; padding: 10px 20px 10px 20px; }
+.button { margin-top: 10px; background-color: #1b89bf; color: #fff; border: none; font-family: Roboto, Georgia; font-size: 14px; rtext-decoration: none; padding: 10px 20px 10px 20px; }
 .button:hover { background: #bababa; color: #fff; }
+
+.buttonRed { margin-top: 10px; background-color: Red; color: #fff; border: none; font-family: Roboto, Georgia; text-decoration: none; padding: 10px 20px 10px 20px; }
+.buttonRed:hover { background: #bababa; color: #fff; }
+
 
 .alert-success{ border: 1px solid #25ff81; background-color: #a1ffc9; color: #31aa64; padding: 20px;}
 .spanData { color: Red; }
