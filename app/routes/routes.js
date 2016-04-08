@@ -61,7 +61,7 @@ module.exports = function(app, passport) {
     });
 
     // GET API Users route
-    app.get('/api/user', function(req, res, next) {
+    app.get('/api/users', function(req, res, next) {
         Users.find(function(err, users) {
             if (err)
                 res.send(err);
