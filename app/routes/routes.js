@@ -136,7 +136,6 @@ module.exports = function(app, passport) {
         });
     });
 
-
     // GET Device with ID page
     app.get('/api/devices/:id', function(req, res) {
         var regid = req.params.id;
@@ -145,6 +144,16 @@ module.exports = function(app, passport) {
                 res.send(err);
             res.json(device);
 
+        });
+    });
+
+    // GET User with username
+    app.get('/api/users/:username', function(req, res) {
+        var username = req.params.username;
+        mongoose.model('Users').find({ "username": username }, function (err, user) {
+          if (err)
+                res.send(err);
+            res.json(user);
         });
     });
 
