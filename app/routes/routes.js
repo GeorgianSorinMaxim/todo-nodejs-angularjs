@@ -152,8 +152,8 @@ module.exports = function(app, passport) {
         var username = req.params.username;
         mongoose.model('Users').find({ "username": username }, function (err, user) {
           if (err)
-                res.send(err);
-            res.json(user);
+            res.send(err);
+          res.json(user);
         });
     });
 
@@ -336,11 +336,13 @@ module.exports = function(app, passport) {
     // Create a device (accessed at POST http://localhost:3000/api/devices/regid)
     app.post('/api/devices', function(req, res, next) {
         var regid = req.body.regid;
+        var uuid = req.body.uuid;
 
         console.log(req.body);
             
         var device = new Device();
         device.regid = regid;
+        device.uuid = uuid;
 
         // Save the device and check for errors
         device.save(function(err) {
