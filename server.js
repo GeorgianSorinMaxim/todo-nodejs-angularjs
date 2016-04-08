@@ -24,6 +24,7 @@ mongoose.connect(configDB.url,  function(err) {
 require('./app/models/patient');
 require('./app/models/patientNews');
 require('./app/models/device');
+require('./app/models/user');
 
 // Log every request to the console
 app.use(morgan('dev'));

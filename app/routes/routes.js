@@ -9,6 +9,7 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://admin:admin@ds021999.mlab.com:21999/prototypedb';
 
+var Users = require('../models/user');
 var Patient = require('../models/patient');
 var PatientNews = require('../models/patientNews');
 var Device = require('../models/device');
@@ -45,6 +46,19 @@ module.exports = function(app, passport) {
         });
     });
 
+    // GET Register user route
+    app.get('/user', function(req, res, next) {
+        res.render('user.ejs', { 
+
+        });
+    });
+
+    // GET API Register user route
+    app.get('/api/user', function(req, res, next) {
+        res.render('user.ejs', { 
+
+        });
+    });
 
     // GET Patients page
     app.get('/patients', function(req, res) {
@@ -111,6 +125,7 @@ module.exports = function(app, passport) {
             res.json(tests);
         });
     });
+
 
     // GET Device with ID page
     app.get('/api/devices/:id', function(req, res) {
@@ -332,6 +347,68 @@ module.exports = function(app, passport) {
                 res.send(err);
 
             res.json({ message: 'Test created!' });
+        });
+    });
+
+    // POST Register user
+    app.post('/registerUser', function(req, res, next) {
+        var employeeId = req.body.cpr;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var email = req.body.email;
+        var phone = req.body.phone;
+        var username = req.body.username;
+        var password = req.body.password;
+        var role = req.body.role;
+        var organisation = req.body.org;
+
+        var user = new Users();
+        user.employeeId = employeeId;
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.email = email;
+        user.phone = phone;
+        user.username = username;
+        user.password = password;
+        user.role = role;
+        user.organisation = organisation;
+
+        user.save(function(err) {
+            if (err) return next(err);
+            res.render('userRegistered.ejs', { 
+                "user" : user 
+            });
+        });
+    });
+
+    // POST API Register user
+    app.post('/api/registerUser', function(req, res, next) {
+        var employeeId = req.body.cpr;
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var email = req.body.email;
+        var phone = req.body.phone;
+        var username = req.body.username;
+        var password = req.body.password;
+        var role = req.body.role;
+        var organisation = req.body.org;
+
+        var user = new Users();
+        user.employeeId = employeeId;
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.email = email;
+        user.phone = phone;
+        user.username = username;
+        user.password = password;
+        user.role = role;
+        user.organisation = organisation;
+
+        user.save(function(err) {
+            if (err) return next(err);
+            res.render('userRegistered.ejs', { 
+                "user" : user 
+            });
         });
     });
 
