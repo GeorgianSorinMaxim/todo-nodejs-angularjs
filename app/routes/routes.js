@@ -60,6 +60,16 @@ module.exports = function(app, passport) {
         });
     });
 
+    // GET API Users route
+    app.get('/api/user', function(req, res, next) {
+        Users.find(function(err, users) {
+            if (err)
+                res.send(err);
+
+            res.json(users);
+        });
+    });
+
     // GET Patients page
     app.get('/patients', function(req, res) {
         mongoose.model('Patient').find(function (err, patients) {
