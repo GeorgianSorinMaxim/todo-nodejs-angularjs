@@ -1,0 +1,54 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ToDo App</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="./services/core.js"></script>
+    <script src="./controller/index.js"></script>
+</head>
+
+<body ng-controller="mainController">
+    <div class="center">
+        <div class="content">
+
+            <header>
+                <h1 class="header">TO-DOs</h1>
+            </header>
+
+            <form id="searchContainer">
+                <input type="text" class="addtodo" placeholder="What needs to be done?" ng-model="input.text"><a href="#" class="btn" ng-click="createTodo()" ng-show="input.text">Add</a>
+            </form>
+
+            <div class="element" ng-repeat="todo in todos | filter: completed">
+                <form>
+                    <div className="view">
+                        <input class="toggle" name="checkbox" type="checkbox" ng-click="completeTodo(todo._id, todo.completed)" ng-model="todo.completed">
+                        <label class="label" for="checkbox" ng-class="{strike:todo.completed}">{{todo.text}}</label>
+                        <a href="#" class="ion-close-round positioning" ng-click="deleteTodo(todo._id)"><a>
+                    </div>
+                </form>
+            </div>
+            <div class="lastRow">
+                <span class="labelNr"><label id="len">{{ todos.length }}</label> items left</span> 
+                <ul ng-model="priceAndRating">
+                    <li class="selectors" ng-repeat="option in sortOptions" ng-click="sort(option, $index)"><a href="#" ng-class="{'btnSmall': showInfo[$index]}">{{option}}</a></li>
+                <ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Created by Georgian-Sorin Maxim</p>
+        </div>
+    </div>
+
+</body>
+</html>

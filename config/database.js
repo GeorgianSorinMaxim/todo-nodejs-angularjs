@@ -1,4 +1,4 @@
 module.exports = {
-	'url' : 'mongodb://admin:admin@ds021999.mlab.com:21999/prototypedb'
+	'url' : 'mongodb://admin:admin@ds019970.mlab.com:19970/dansketest'
 	// 'url' : 'mongodb://localhost'
 };
