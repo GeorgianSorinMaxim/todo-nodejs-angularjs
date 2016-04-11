@@ -17,38 +17,38 @@ https://github.com/e0ipso/message-center
 Download and install Node.js from here: https://nodejs.org/en/download/
 
   - Install the project and its dependecies, by opening the terminal and navigating to the project folder:
-`code` cd FOLDER_PATH
-`code` npm install --save
+```cd FOLDER_PATH
+```npm install --save
   - In the case your environment lacks some modules, you might be requied to install them.
 
   - Run locally when being in the project folder:
-`code` node server.js
+```node server.js
   - Open the browser and go to the following URL: http://localhost:3000/
 
   - Run the server using Nodemon (automatically restarts the server when there are changes to the files).
-`code` nodemon server
+```nodemon server
 
 
 ## Run the unit tests
  - Open a terminal window (iTerm) and go to the path of the cloned folder using the command: 
-`code` cd YOUR_FOLDER_PATH
+```cd YOUR_FOLDER_PATH
  - Go to the tests folder using the command: ]
-`code` cd app
-`code` cd tests
+```cd app
+```cd tests
  - Run the tests using:
-`code` mocha unittests
+```mocha unittests
 
 
 ## Run the end-to-end tests:
 - Install Protractor:
-`code` sudo npm install -g protractor
-`code` sudo webdriver-manager update
+```sudo npm install -g protractor
+```sudo webdriver-manager update
 - While the Node.js server is running, start the webdriver-manager:
-`code` webdriver-manager start
+```webdriver-manager start
 - Open a new tab in the terminal and go to the folder path:
-`code` cd FOLDER_PATH
+```cd FOLDER_PATH
 - Then run:
-`code` protractor protractor.conf.js
+```protractor protractor.conf.js
 
 
 ## See below the steps on how to test the API using Postman: 	
