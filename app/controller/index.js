@@ -8,10 +8,10 @@ myApp.controller("mainController", function($scope, $http, Todos) {
     $scope.sortOptions = ["All", "Active", "Completed"];
 
     Todos.get()
-        .success(function(data) {
-            $scope.todos = data;
-            $scope.loading = false;
-        });
+    .success(function(data) {
+        $scope.todos = data;
+        $scope.loading = false;
+    });
 
     $scope.createTodo = function() {
         if ($scope.input.text != undefined) {
